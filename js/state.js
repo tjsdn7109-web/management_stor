@@ -3,24 +3,40 @@
 
 import { getWeekKey } from './holidays.js';
 
+// ── 기본 설정 (단일 출처) ─────────────────────
+// State 리터럴 안에서 메서드를 호출할 수 없으므로 바깥에 둔다.
+// 이전에는 초기값을 리터럴에 중복 작성해 positions가 빠져 있었고,
+// localStorage가 비어 있는 첫 실행에서 직급 추가가 실패했다.
+function defaultSettings() {
+  return {
+    weeklyMaximumHours: 52,
+    storeOperatingDays: [0, 1, 2, 3, 4, 5, 6], // 0=일~6=토
+    // 요일별 하루 필요 근무 인원
+    requiredStaffByDay: { 0: 2, 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2 },
+    // 직급 목록 — 배열 순서가 곧 서열 (위쪽이 높음)
+    positions: [
+      { name: '사장',       isAdmin: true  },
+      { name: '매니저',     isAdmin: true  },
+      { name: '정직원',     isAdmin: false },
+      { name: '아르바이트', isAdmin: false },
+      { name: '기타',       isAdmin: false },
+    ],
+    // 4대보험 요율 (퍼센트)
+    insuranceRates: {
+      nationalPension:     { employee: 4.5,   employer: 4.75  },
+      healthInsurance:     { employee: 3.545, employer: 3.595 },
+      longTermCareRate:    13.14,   // 장기요양 = 건강보험료 × 이 비율(%)
+      employmentInsurance: { employee: 0.9,   employer: 1.15  },
+      industrialAccident:  { employer: 1.0  },
+    },
+  };
+}
+
 export const State = {
   // ── 영속 데이터 ──────────────────────────────
   employees: [],   // Employee[]
   schedules: [],   // Schedule[]
-  settings: {
-    weeklyMaximumHours: 52,
-    storeOperatingDays: [0, 1, 2, 3, 4, 5, 6], // 0=일~6=토 (기본: 전 요일)
-    // 요일별 하루 필요 근무 인원 (0=일 ~ 6=토)
-    requiredStaffByDay: { 0: 2, 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2 },
-    // 4대보험 요율 (사업주/근로자 각각, 퍼센트 단위)
-    insuranceRates: {
-      nationalPension:     { employee: 4.5,  employer: 4.75 }, // 국민연금
-      healthInsurance:     { employee: 3.545, employer: 3.595 }, // 건강보험
-      longTermCareRate:    13.14,  // 장기요양보험 = 건강보험료 × 이 비율(%)
-      employmentInsurance: { employee: 0.9,  employer: 1.15  }, // 고용보험
-      industrialAccident:  { employer: 1.0  },                  // 산재보험 (사업주 전액)
-    },
-  },
+  settings: defaultSettings(),
 
   // ── UI 상태 (미저장) ──────────────────────────
   ui: {
@@ -104,26 +120,7 @@ export const State = {
 
   // ── 기본 설정값 반환 ──────────────────────────
   _defaultSettings() {
-    return {
-      weeklyMaximumHours: 52,
-      storeOperatingDays: [0, 1, 2, 3, 4, 5, 6],
-      requiredStaffByDay: { 0: 2, 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2 },
-      // 직급 목록: name, isAdmin
-      positions: [
-        { name: '사장',       isAdmin: true  },
-        { name: '매니저',     isAdmin: true  },
-        { name: '정직원',     isAdmin: false },
-        { name: '아르바이트', isAdmin: false },
-        { name: '기타',       isAdmin: false },
-      ],
-      insuranceRates: {
-        nationalPension:     { employee: 4.5,   employer: 4.75  },
-        healthInsurance:     { employee: 3.545, employer: 3.595 },
-        longTermCareRate:    13.14,
-        employmentInsurance: { employee: 0.9,   employer: 1.15  },
-        industrialAccident:  { employer: 1.0  },
-      },
-    };
+    return defaultSettings();
   },
 
   // ── 전체 초기화 ───────────────────────────────

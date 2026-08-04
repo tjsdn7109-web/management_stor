@@ -627,9 +627,13 @@ function renderSettingsTab(container) {
   document.getElementById('add-pos-btn').addEventListener('click', () => {
     const nameInput = document.getElementById('new-pos-name');
     const name = nameInput.value.trim();
-    if (!name) { showToast('직급 이름을 입력해 주세요.', 'error'); return; }
+    if (!name) { showToast('직급 이름을 입력하세요.', 'error'); return; }
+
+    // positions가 없는 구버전 데이터 대비
+    if (!Array.isArray(State.settings.positions)) State.settings.positions = [];
+
     if (State.settings.positions.some(p => p.name === name)) {
-      showToast('이미 존재하는 직급입니다.', 'error'); return;
+      showToast('이미 있는 직급입니다.', 'error'); return;
     }
     const isAdmin = document.getElementById('new-pos-admin').checked;
     State.settings.positions.push({ name, isAdmin });
