@@ -1321,11 +1321,151 @@ body { font-family: var(--font); color: var(--gray-900); background: var(--gray-
 .emp-notes-section { width: 100%; flex-basis: 100%; }
 
 /* ── 반응형 ───────────────────────────────── */
+
+/* 태블릿 */
+@media (max-width: 900px) {
+  .employee-list { grid-template-columns: 1fr; }
+  .salary-cards  { grid-template-columns: 1fr; }
+}
+
+/* 모바일 */
 @media (max-width: 640px) {
+  html { font-size: 13px; }
+
   .main-content { padding: 12px; }
   .form-grid { grid-template-columns: 1fr; }
-  .app-nav .nav-tab { padding: 6px 8px; font-size: 0.8rem; }
-  .sch-day { min-height: 60px; }
+
+  /* 헤더 — 로고 줄이고 탭은 가로 스크롤 */
+  .app-header { padding: 0 12px; gap: 8px; height: 52px; }
+  .app-logo { font-size: 0.95rem; white-space: nowrap; }
+  .app-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .app-nav::-webkit-scrollbar { display: none; }
+  .app-nav .nav-tab { padding: 6px 10px; font-size: 0.8rem; white-space: nowrap; }
+
+  /* 섹션 헤더 — 제목과 버튼을 세로로 */
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .schedule-actions,
+  .salary-month-nav { width: 100%; }
+  .schedule-actions .btn { flex: 1 1 auto; min-width: 0; }
+  .month-label { flex: 1; }
+
+  /* 달력 — 셀 축소, 태그 압축 */
+  .sch-day { min-height: 64px; padding: 3px; }
+  .sch-day-header .day-num { font-size: 0.75rem; }
+  .holiday-name-sm { display: none; }
+  .emp-tag { font-size: 0.62rem; padding: 2px 4px; gap: 2px; }
+  .tag-hours { font-size: 0.55rem; }
+  .sch-weekday { font-size: 0.75rem; padding: 4px 0; }
+  /* 터치 기기에서는 + 버튼을 항상 노출 */
+  .sch-add-btn { opacity: .45; width: 16px; height: 16px; }
+
+  /* 범례 — 줄바꿈 허용 */
+  .schedule-legend { gap: 6px; }
+  .legend-item { padding: 4px 8px; font-size: 0.74rem; }
+
+  /* 급여 요약 */
   .salary-summary-bar { flex-direction: column; }
-  .summary-item { border-right: none; border-bottom: 1px solid var(--gray-200); }
+  .summary-item {
+    border-right: none;
+    border-bottom: 1px solid var(--gray-200);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+  .summary-item:last-child { border-bottom: none; }
+
+  /* 직원 카드 */
+  .emp-color-dot { width: 28px; height: 28px; margin-left: 10px; }
+  .emp-card-body { padding: 12px; }
+  .emp-card-details { gap: 4px 10px; font-size: 0.74rem; }
+  /* 액션 버튼은 카드 아래로 내려 가로 배치 */
+  .emp-card-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    flex-basis: 100%;
+    order: 10;
+    gap: 4px;
+    padding: 0 12px 12px;
+    border-left: none;
+    border-top: 1px solid var(--gray-100);
+    padding-top: 10px;
+  }
+  .emp-card-actions .btn { flex: 1 1 auto; font-size: 0.72rem; padding: 6px 8px; }
+  .emp-notes-section { order: 11; }
+
+  /* 설정 입력은 전체 폭 */
+  .settings-row input { width: 100%; }
+
+  /* 모달 — 화면에 맞추고 하단 시트처럼 */
+  .modal-box {
+    min-width: 0;
+    width: calc(100vw - 24px);
+    max-width: none;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 18px 16px;
+  }
+  .modal-wide { min-width: 0; }
+  .modal-actions { flex-direction: column-reverse; gap: 6px; }
+  .modal-actions .btn { width: 100%; }
+  .modal-header { flex-wrap: wrap; gap: 4px; }
+
+  /* 요일별 인원 설정 */
+  .plan-row { gap: 6px; padding: 7px 8px; }
+  .plan-avail { width: auto; font-size: 0.66rem; }
+  .plan-unit { display: none; }
+  .plan-summary { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .plan-warn { margin-left: 0; }
+
+  /* 설정 탭 */
+  .settings-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .staff-per-day-grid { grid-template-columns: repeat(4, 1fr); }
+  .ins-rate-grid { font-size: 0.76rem; }
+  .pos-item { flex-wrap: wrap; gap: 4px; }
+
+  /* 색상 팔레트 */
+  .color-palette { grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .color-preview-note { display: none; }
+
+  /* 근무자 선택 */
+  .emp-picker-item { padding: 10px; }
+  .emp-picker-info { font-size: 0.7rem; }
+
+  /* 충돌 배너 — 범례는 숨김 */
+  .cb-legend { display: none; }
+  .conflict-banner { font-size: 0.78rem; padding: 8px 10px; }
+
+  /* 주간 요약 */
+  .summary-table th,
+  .summary-table td { padding: 6px 8px; font-size: 0.74rem; }
+  .summary-table th:first-child,
+  .summary-table td:first-child { min-width: 84px; }
+
+  /* 토스트 — 하단 전체 폭 */
+  #toast-container { left: 12px; right: 12px; bottom: 12px; }
+  .toast { width: 100%; font-size: 0.82rem; }
+}
+
+/* 소형 기기 */
+@media (max-width: 380px) {
+  .sch-day { min-height: 54px; }
+  .emp-tag { font-size: 0.58rem; }
+  .tag-hours { display: none; }
+  .staff-per-day-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 터치 기기 — hover 전용 UI 항상 노출 */
+@media (hover: none) {
+  .sch-add-btn { opacity: .5; }
+  .emp-color-pencil { opacity: .9; }
 }
